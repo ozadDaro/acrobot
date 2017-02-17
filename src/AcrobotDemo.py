@@ -37,9 +37,8 @@ def AcrobotDemo(maxepisodes) :
 		fig = plt.figure()
 		ax1 = fig.add_subplot(221)   
 		ax1.plot(xpoints,ypoints)      
-		title(['Episode: ',int2str(i),' epsilon: ',num2str(epsilon)])    
 		ax.set_title('Episode: '+str(i)+' epsilon: '+str(epsilon))
 		
 		if (i>1000) : 
-			grafica=True;
+			grafica=True
 

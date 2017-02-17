@@ -44,10 +44,10 @@ def Episode( maxsteps, Q , alpha, gamma,epsilon,statelist,actionlist,grafic ) :
 		steps=steps+1
 
 
-		if (grafic==true):           
+		if (grafic==True):           
 			AcrobotPlot(x,action,steps)
 
-		if (f==true):
+		if (f==True):
 			break
      
 	print "plot"
