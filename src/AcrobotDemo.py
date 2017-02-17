@@ -40,5 +40,4 @@ def AcrobotDemo(maxepisodes) :
 		
 		if (i>1000)
 			grafica=True;
-		end
-	end
+
