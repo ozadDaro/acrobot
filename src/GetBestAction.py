@@ -1,2 +1,3 @@
 def GetBestAction(Q,s):
-	return max(Q[s][:])
+	print s
+	return max(Q[s,:])

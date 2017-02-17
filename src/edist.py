@@ -1,5 +1,7 @@
-import math as sqrt
+from math import sqrt
+import numpy as np
 def edist(X,Y):
-	return sqrt(sum( (xi - yi)**2 for xi, yi in zip(x, y)))
+	return np.sqrt(np.sum( (xi - yi)**2 for xi, yi in zip(X, Y)))
+
 
  

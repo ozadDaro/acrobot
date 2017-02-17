@@ -1,17 +1,19 @@
+# -*- coding: utf-8 -*-
 from BuildQTable import * 
 from BuildStateList import * 
 from BuildActionList import * 
+from Episode import *
 import matplotlib.pyplot as plt
 
 def AcrobotDemo(maxepisodes) : 
 
-	maxsteps    = 1000;              #nombre maximal d'étapes par épisode
+	maxsteps    = 1000;              #nombre maximal dtapes par épisode
 	statelist   = BuildStateList();  #Liste d'états
 	actionlist  = BuildActionList(); #Liste d'actions
 
 	nstates     = len(statelist);
 	nactions    = len(actionlist);
-	Q           = BuildQTable( nstates,nactions );  # Qtable
+	Q           = BuildQTable(nstates,nactions);  # Qtable
 
 	alpha       = 0.5;    # learning rate
 	gamma       = 1.0;    # discount factor
@@ -30,7 +32,7 @@ def AcrobotDemo(maxepisodes) :
 		epsilon = epsilon * 0.99;
 		
 		xpoints[i]=i;
-		ypoints(i)=steps;
+		ypoints[i]=steps;
 		#graph de la learning curve
 		fig = plt.figure()
 		ax1 = fig.add_subplot(221)   
@@ -38,6 +40,6 @@ def AcrobotDemo(maxepisodes) :
 		title(['Episode: ',int2str(i),' epsilon: ',num2str(epsilon)])    
 		ax.set_title('Episode: '+str(i)+' epsilon: '+str(epsilon))
 		
-		if (i>1000)
+		if (i>1000) : 
 			grafica=True;
 
