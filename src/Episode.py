@@ -4,8 +4,11 @@ from e_greedy_selection import e_greedy_selection
 from AcrobotPlot import AcrobotPlot
 from UpdateSARSA import UpdateSARSA
 from GetReward import GetReward
+from DoAction import *
 
 def Episode( maxsteps, Q , alpha, gamma,epsilon,statelist,actionlist,grafic ) :
+
+	print "Episode"
 
 	x            = [0, 0, 0, 0]
 	steps        = 0
@@ -18,7 +21,7 @@ def Episode( maxsteps, Q , alpha, gamma,epsilon,statelist,actionlist,grafic ) :
 
 	for i in range(maxsteps )   :
 	        
-		action = actionlist[a-1]  
+		action = actionlist[int(a)]  
 
 		xp  = DoAction( action , x )  
 
@@ -47,6 +50,6 @@ def Episode( maxsteps, Q , alpha, gamma,epsilon,statelist,actionlist,grafic ) :
 		if (f==true):
 			break
      
-
+	print "plot"
 	AcrobotPlot(x,action,steps)
 	return total_reward,steps,Q
