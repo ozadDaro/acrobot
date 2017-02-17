@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def AcrobotPlot( x,a,steps ):
+
+	plt.clf()
 	
 	plt.subplot(212)
 
@@ -33,4 +35,8 @@ def AcrobotPlot( x,a,steps ):
 
 	plt.axis([-2.1, 2.1, -2.1, 2.1])
 	
-	plt.show()
+	plt.show(block=False)
+	plt.pause(0.05)
+	
+	
+	
