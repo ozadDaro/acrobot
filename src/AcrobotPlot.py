@@ -3,11 +3,15 @@ import matplotlib.pyplot as plt
 
 import numpy as np
 
-def AcrobotPlot( x,a,steps ):
+def AcrobotPlot( x,a,steps ,fig):
 
-	plt.clf()
+	#plt.clf()
 	
-	plt.subplot(212)
+	ax1 = fig.add_subplot(212) 
+	
+	ax1.clear()
+	
+	#plt.subplot(212)
 
 	theta1 = x[0]
 	theta2 = x[1]
@@ -27,16 +31,16 @@ def AcrobotPlot( x,a,steps ):
 	x_acrobot[2] = x_acrobot[1] + sin(theta2)
 	y_acrobot[2] = y_acrobot[1] - cos(theta2) 
 
-	plt.plot(x_acrobot ,y_acrobot,'ok-',linewidth = 1,markersize=7,markerfacecolor=[.7, .7, .7])
+	ax1.plot(x_acrobot ,y_acrobot,'ok-',linewidth = 1,markersize=7,markerfacecolor=[.7, .7, .7])
  	
- 	plt.plot(x_acrobot[2],y_acrobot[2] ,'.r',markersize=20)
+ 	ax1.plot(x_acrobot[2],y_acrobot[2] ,'.r',markersize=20)
 
-	plt.title(  'Step: '+str(steps))
+	ax1.set_title(  'Step: '+str(steps))
 
-	plt.axis([-2.1, 2.1, -2.1, 2.1])
+	ax1.axis([-2.1, 2.1, -2.1, 2.1])
 	
 	plt.show(block=False)
-	plt.pause(0.05)
+	plt.pause(0.001)
 	
 	
 	

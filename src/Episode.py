@@ -6,7 +6,7 @@ from UpdateSARSA import UpdateSARSA
 from GetReward import GetReward
 from DoAction import *
 
-def Episode( maxsteps, Q , alpha, gamma,epsilon,statelist,actionlist,grafic ) :
+def Episode( maxsteps, Q , alpha, gamma,epsilon,statelist,actionlist,grafic,fig ) :
 
 	print "Episode"
 
@@ -45,11 +45,10 @@ def Episode( maxsteps, Q , alpha, gamma,epsilon,statelist,actionlist,grafic ) :
 
 
 		if (grafic==True):           
-			AcrobotPlot(x,action,steps)
+			AcrobotPlot(x,action,steps,fig)
 
 		if (f==True):
 			break
      
-	print "plot"
-	AcrobotPlot(x,action,steps)
+	AcrobotPlot(x,action,steps,fig)
 	return total_reward,steps,Q

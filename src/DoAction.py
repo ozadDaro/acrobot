@@ -2,7 +2,7 @@ from math import pi, cos, sin
 
 def DoAction(torque,x):
 
-	print "DoAction"
+
  	
 	maxSpeed1 = 4*pi
 	maxSpeed2 = 9*pi 
@@ -26,6 +26,7 @@ def DoAction(torque,x):
 	theta2        = x[1]
 	theta1_dot    = x[2]
 	theta2_dot    = x[3]
+	
 
 
 	d1     = m1*lc1Square + m2*(l1Square + lc2Square + 2*l1*lc2 * cos(theta2)) + I1 + I2
@@ -39,12 +40,16 @@ def DoAction(torque,x):
 	accel1 = -(d2*accel2+phi1)/d1
 
 	i=1
-	print "avant boucle"
+
 	for i in range(4):
 		theta1_dot = theta1_dot + accel1*delta_t
-		print 1
+
+		
+
 		if(theta1_dot<-maxSpeed1):
+			
 			theta1_dot=-maxSpeed1
+
                  
 		if(theta1_dot>maxSpeed1):
 			theta1_dot=maxSpeed1
@@ -52,16 +57,26 @@ def DoAction(torque,x):
 		theta1     =  theta1 + theta1_dot*delta_t
 		theta2_dot =  theta2_dot + accel2*delta_t
 
-        if(theta2_dot<-maxSpeed2):
-        	theta2_dot=-maxSpeed2
+
+		if(theta2_dot<-maxSpeed2):
+        	
+			theta2_dot=-maxSpeed2
+			
+
+		
+		
 
 		if(theta2_dot>maxSpeed2):
+			print "Vrai"
 			theta2_dot=maxSpeed2
+			
+
 	    
 		theta2 = theta2 + theta2_dot*delta_t; 
-		i=i+1
+		
+		
+
         
-	print "apres boucle"
 
 	if(theta1<-pi):
 		theta1 = -pi 

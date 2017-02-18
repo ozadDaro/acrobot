@@ -1,3 +1,6 @@
+import numpy as np
+
 def GetBestAction(Q,s):
 	print s
-	return max(Q[int(s),:])
+	print np.argmax(Q[int(s),:])
+	return np.argmax(Q[int(s),:])
