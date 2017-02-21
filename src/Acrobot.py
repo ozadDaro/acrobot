@@ -201,13 +201,14 @@ def AcrobotPlot( x,a,etapes ,fig):
 	plt.pause(0.001)
 	
 
-	
-def nouvelEpisode( nbEtapes, Q , alpha, gamma,epsilon,listeEtats,listeActions,afficherAcrobot,fig ) :
+def nouvelEpisodeSarsa( nbEtapes, Q , alpha, gamma,epsilon,listeEtats,listeActions, lamb, e, afficherAcrobot,fig ) :
 
 
 	x            = [0, 0, 0, 0]
 	etapes       = 0
 	rewardTotal = 0
+	
+	visites = [1]*len(listeEtats)
 
 
 	etat   = Discretisation(x,listeEtats)
@@ -215,6 +216,9 @@ def nouvelEpisode( nbEtapes, Q , alpha, gamma,epsilon,listeEtats,listeActions,af
 
 
 	for i in range(nbEtapes )   :
+	
+		#alpha = 1.0/visites[a]
+		visites[a]+=1
 	        
 		action = listeActions[int(a)]  
 
@@ -226,11 +230,75 @@ def nouvelEpisode( nbEtapes, Q , alpha, gamma,epsilon,listeEtats,listeActions,af
 		sp  = Discretisation(xp,listeEtats)
 
 		ap = epsilon_greedy(Q,sp,epsilon)
+		
+		delta = r + gamma*Q[sp][ap]-Q[etat][a]
+		
+		e[etat][a]+=1
+		
+		for s in range(len(listeEtats)) : 
+			for a in range(len(listeActions)) : 
+				Q[s][a]+=alpha*delta*e[s][a]
+				e[s][a]*=gamma*lamb
 
 
-		#Q = UpdateSARSA( etat, a, r, sp, ap, Q , alpha, gamma )
-		#SARSA
-		Q[int(etat)][int(a)] =  Q[int(etat)][int(a)] + alpha * ( r + gamma*Q[int(sp)][int(ap)] - Q[int(etat)][int(a)])
+
+		etat = sp
+		a = ap
+		x = xp
+
+
+		etapes=etapes+1
+
+
+		if (afficherAcrobot==True):           
+			AcrobotPlot(x,action,etapes,fig)
+
+		if (f==True):
+			break
+     
+	AcrobotPlot(x,action,etapes,fig)
+	return rewardTotal,etapes,Q
+	
+
+def nouvelEpisodeQ( nbEtapes, Q , alpha, gamma,epsilon,listeEtats,listeActions, lamb, e, afficherAcrobot,fig ) :
+
+
+	x            = [0, 0, 0, 0]
+	etapes       = 0
+	rewardTotal = 0
+	
+	visites = [1]*len(listeEtats)
+
+
+	etat   = Discretisation(x,listeEtats)
+	a   = epsilon_greedy(Q,etat,epsilon)
+
+
+	for i in range(nbEtapes )   :
+	
+		#alpha = 1.0/visites[a]
+		#visites[a]+=1
+	        
+		action = listeActions[int(a)]  
+
+		xp  = Actionner( action , x )  
+
+		r,f   = GetReward(xp)
+		rewardTotal = rewardTotal+ r
+
+		sp  = Discretisation(xp,listeEtats)
+
+		#ap = epsilon_greedy(Q,sp,epsilon)
+		ap = np.argmax(Q[sp,:])
+		delta = r + gamma*Q[sp][ap]-Q[etat][a]
+		
+		e[etat][a]+=1
+		
+		for s in range(len(listeEtats)) : 
+			for a in range(len(listeActions)) : 
+				Q[s][a]+=alpha*delta*e[s][a]
+				e[s][a]*=gamma*lamb
+
 
 
 		etat = sp
@@ -250,34 +318,39 @@ def nouvelEpisode( nbEtapes, Q , alpha, gamma,epsilon,listeEtats,listeActions,af
 	AcrobotPlot(x,action,etapes,fig)
 	return rewardTotal,etapes,Q
 
+	
 
 def AcrobotDemo(nbEpisodes) : 
 
+	
+	
 	fig = plt.figure()
 	ax1 = fig.add_subplot(211) 
 
-	nbEtapes   = 500;              #nombre maximal dtapes par épisode
+	nbEtapes   = 1000;              #nombre maximal dtapes par épisode
 	listeEtats   = CreerListeEtats();  #Liste d'états
 	listeActions  = [-1.0 , 0.0 , 1.0]; #Liste d'actions
 
 
 	Q=np.zeros((len(listeEtats),len(listeActions)))
+	e = np.zeros((len(listeEtats),len(listeActions)))
 
 	alpha       = 0.5;    # learning rate
 	gamma       = 1.0;    # discount factor
-	epsilon     = 0.001;   # 
+	epsilon     = 0.9;   # 
+	lamb = 0.3
 	afficherAcrobot     = False;  # indique si on fait appel à l'inteface graphique
 
 	xpoints=[];
 	ypoints=[];
 
 	for i in range(nbEpisodes) : 
-		
-		total_reward,etapes,Q  = nouvelEpisode( nbEtapes, Q , alpha, gamma,epsilon,listeEtats,listeActions,afficherAcrobot, fig );
+		total_reward,etapes,Q  = nouvelEpisodeSarsa( nbEtapes, Q , alpha, gamma,epsilon,listeEtats,listeActions,lamb, e, afficherAcrobot, fig )
+		#total_reward,etapes,Q  = nouvelEpisode( nbEtapes, Q , alpha, gamma,epsilon,listeEtats,listeActions,afficherAcrobot, fig );
 		print 'Espisode: ',str(i),'  Etapes:',str(etapes),'  Reward:',str(total_reward),' epsilon: ',str(epsilon)   
 		
 		#On décroit epsilon
-		epsilon = epsilon * 0.99;
+		epsilon = epsilon * 0.95;
 
 		xpoints.append(i);
 		ypoints.append(etapes);
@@ -286,10 +359,10 @@ def AcrobotDemo(nbEpisodes) :
 		  
 		ax1.plot(xpoints,ypoints)      
 		ax1.set_title('Episode: '+str(i)+' epsilon: '+str(epsilon))
-		plt.pause(1)
+		plt.pause(0.0001)
 
 
 
 
 
-AcrobotDemo(1000);
+AcrobotDemo(200);
